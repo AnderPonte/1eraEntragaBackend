@@ -15,6 +15,11 @@ class ProductManager {
     await fs.writeFile(this.path, JSON.stringify(product));
   };
 
+  isId = async (id) => {
+    let products = await this.readProducts();
+    return products.find((item) => item.id === id);
+  };
+
   addProducts = async (product) => {
     let productsCurrent = await this.readProducts();
     product.id = uuid();
@@ -27,13 +32,21 @@ class ProductManager {
     return await this.readProducts();
   };
   getProductsById = async (id) => {
-    let products = await this.readProducts();
-    let productById = products.find((item) => item.id === id);
+    let productById = await this.isId(id);
     if (!productById) {
       return "producto no encontrado";
     } else {
       return productById;
     }
+  };
+
+  updateProduct = async (id, updateProduct) => {
+    let productById = await this.isId(id);
+    await this.deleteProduct(id);
+    let productsCurrent = await this.readProducts();
+    let products = [{ ...updateProduct, id: id }, ...productsCurrent];
+    await this.writeProducts(products);
+    return "Producto actualizado";
   };
 
   deleteProduct = async (id) => {

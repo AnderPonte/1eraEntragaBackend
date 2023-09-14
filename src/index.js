@@ -1,7 +1,6 @@
 import express from "express";
-import ProductManager from "./controllers/ProductManager.js";
-
-const product = new ProductManager();
+import productRouter from "./routes/product.routes.js";
+import cartRouter from "./routes/carts.routes.js";
 
 const app = express();
 const PORT = 8080;
@@ -9,24 +8,8 @@ const PORT = 8080;
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-app.post("/products", async (req, res) => {
-  let newProduct = req.body;
-  res.send(await product.addProducts(newProduct));
-});
-
-app.get("/products", async (req, res) => {
-  res.send(await product.getProducts());
-});
-
-app.get("/products/:id", async (req, res) => {
-  let id = req.params.id;
-  res.send(await product.getProductsById(id));
-});
-
-app.delete("/products/:id", async (req, res) => {
-  let id = req.params.id;
-  res.send(await product.deleteProduct(id));
-});
+app.use("/api/products", productRouter);
+app.use("/api/cart", cartRouter);
 
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
