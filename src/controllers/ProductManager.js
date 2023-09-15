@@ -28,9 +28,6 @@ class ProductManager {
     return "producto agregado";
   };
 
-  getProducts = async () => {
-    return await this.readProducts();
-  };
   getProductsById = async (id) => {
     let productById = await this.isId(id);
     if (!productById) {

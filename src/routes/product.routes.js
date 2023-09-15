@@ -14,19 +14,16 @@ productRouter.get("/", async (req, res) => {
 });
 
 productRouter.get("/:id", async (req, res) => {
-  let id = req.params.id;
-  res.send(await product.getProductsById(id));
+  res.send(await product.getProductsById(req.params.id));
 });
 
 productRouter.put("/:id", async (req, res) => {
-  let id = req.params.id;
   let updateProduct = req.body;
-  res.send(await product.updateProduct(id, updateProduct));
+  res.send(await product.updateProduct(req.params.id, updateProduct));
 });
 
 productRouter.delete("/:id", async (req, res) => {
-  let id = req.params.id;
-  res.send(await product.deleteProduct(id));
+  res.send(await product.deleteProduct(req.params.id));
 });
 
 export default productRouter;
